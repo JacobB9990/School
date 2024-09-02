@@ -1,11 +1,11 @@
 import ctypes
 
 
-class DynamicArray(object):
-    def __init__(self, initial_capacity=16):
+class SlowArray(object):
+    def __init__(self, initial_capacity=1):
         self.n = 0
         self.capacity = initial_capacity
-        self.A = self.make_array(self.capacity)
+        self.A = self.make_array(self.capacity + 1)
 
     def __len__(self):
         return self.n
@@ -20,7 +20,7 @@ class DynamicArray(object):
 
     def append(self, ele):
         if self.n == self.capacity:
-            self._resize(int(self.capacity * 2))
+            self._resize(int(self.capacity + 1))
         self.A[self.n] = ele
         self.n += 1
 
@@ -28,7 +28,7 @@ class DynamicArray(object):
         if index < 0 or index > self.n:
             raise IndexError("Index out of range")
         if self.n == self.capacity:
-            self._resize(int(self.capacity * 1.5))
+            self._resize(int(self.capacity + 1))
         for i in range(self.n, index, -1):
             self.A[i] = self.A[i - 1]
         self.A[index] = value
@@ -50,7 +50,7 @@ class DynamicArray(object):
             raise IndexError("Array is empty")
         self.n -= 1
         if self.n < self.capacity // 4:
-            self._resize(max(16, int(self.capacity * 0.5)))
+            self._resize(max(16, int(self.capacity + 1)))
 
     def _resize(self, new_cap):
         B = self.make_array(new_cap)
