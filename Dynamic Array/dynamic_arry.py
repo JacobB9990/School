@@ -18,6 +18,9 @@ class DynamicArray(object):
     def __str__(self):
         return "[" + ", ".join(str(self.A[i]) for i in range(self.n)) + "]"
 
+    def findCapacity(self):
+        return self.capacity
+
     def append(self, ele):
         if self.n == self.capacity:
             self._resize(int(self.capacity * 2))
