@@ -38,6 +38,7 @@ class SlowArray(object):
         self.n += 1
 
     def remove(self, index):
+
         if self.n == 0:
             raise IndexError("Array is empty")
         if index < 0 or index >= self.n:

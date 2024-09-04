@@ -1,11 +1,11 @@
-import ctypes
+import ctypes  # How we can create an array
 
 
-class DynamicArray(object):
+class DynamicArray(object):  # objects mean any value type (int, str, ...)
     def __init__(self, initial_capacity=16):
-        self.n = 0
-        self.capacity = initial_capacity
-        self.A = self.make_array(self.capacity)
+        self.n = 0  # Number of elements (init with 0)
+        self.capacity = initial_capacity  # Gives cap 16 as default
+        self.A = self.make_array(self.capacity)  # Will explain soon
 
     def __len__(self):
         return self.n
@@ -21,11 +21,11 @@ class DynamicArray(object):
     def findCapacity(self):
         return self.capacity
 
-    def append(self, ele):
-        if self.n == self.capacity:
-            self._resize(int(self.capacity * 2))
-        self.A[self.n] = ele
-        self.n += 1
+    def append(self, ele):  # Element is the value you are adding
+        if self.n == self.capacity:  # Makes sure there is room
+            self._resize(int(self.capacity * 2))  # Capacity times 2
+        self.A[self.n] = ele  # That index now is equal to ele
+        self.n += 1  # Adds on total elements
 
     def insertAt(self, index, value):
         if index < 0 or index > self.n:
@@ -62,8 +62,8 @@ class DynamicArray(object):
         self.A = B
         self.capacity = new_cap
 
-    def make_array(self, new_cap):
-        return (new_cap * ctypes.py_object)()
+    def make_array(self, new_cap):  # self.A becomes the return value
+        return (new_cap * ctypes.py_object)()  # returns array
 
     def extend(self, *args):
         if self.n + len(args) > self.capacity:

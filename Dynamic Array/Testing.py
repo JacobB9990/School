@@ -2,44 +2,51 @@ from dynamic_arry import DynamicArray
 from stupid_arry import SlowArray
 import time
 import matplotlib.pyplot as plt
+import ctypes
 
 
-def measure_time_for_append(container, max_size):
-    times, sizes, capacity = [], [], []
-    start_time = time.time()
+def measure_time_for_append(container: ctypes.Array, max_size: int) -> tuple[list[float], list[int], float, list[int]]:
+    times: list[float] = []
+    sizes: list[int] = []
+    capacity: list[int] = []
+
+    start_time: float = time.time()
 
     for size in range(0, max_size + 1):
-        container.append(1)
-        times.append(time.time() - start_time)
-        sizes.append(size)
-        cap = container.findCapacity()
+        container.append(1)  # Append an element
+
+        times.append(time.time() - start_time)  # Record time
+        sizes.append(size)  # Record size
+        cap: int = container.findCapacity()  # Get current capacity
         capacity.append(cap)
 
-    final_time = time.time() - start_time
+    final_time: float = time.time() - start_time  # Total time taken
 
     return times, sizes, final_time, capacity
 
 
-dynamic_array = DynamicArray()
-slow_array = SlowArray()
-max_size = 1000
+# Initialize DynamicArray and SlowArray instances
+dynamic_array: DynamicArray = DynamicArray()
+slow_array: SlowArray = SlowArray()
+max_size: int = 1000  # Define the maximum size for the test
 
+# Measure the time for appending elements to each array
 time_dyn, no_obj_dyn, fin_time_dyn, capacity_dyn = measure_time_for_append(dynamic_array, max_size)
 time_slo, no_obj_slo, fin_time_slo, capacity_slo = measure_time_for_append(slow_array, max_size)
 
+# Not important
+# print("Dynamic Array size: ")
+# print(f'{time_dyn} \n'
+#       f'{no_obj_dyn} \n'
+#       f'{fin_time_dyn}\n'
+#       f'Capacity: {capacity_dyn} \n')
+# print("Slow Array size: ")
+# print(f'{time_slo} \n'
+#       f'{no_obj_slo} \n'
+#       f'{fin_time_slo}\n'
+#       f'Capacity: {capacity_slo} \n')
 
-print("Dynamic Array size: ")
-print(f'{time_dyn} \n'
-      f'{no_obj_dyn} \n'
-      f'{fin_time_dyn}\n'
-      f'Capacity: {capacity_dyn} \n')
-print("Slow Array size: ")
-print(f'{time_slo} \n'
-      f'{no_obj_slo} \n'
-      f'{fin_time_slo}\n'
-      f'Capacity: {capacity_slo} \n')
-
-print(fin_time_dyn, fin_time_slo)
+# print(fin_time_dyn, fin_time_slo)
 
 fig, ax = plt.subplots()
 fig.patch.set_facecolor('black')
