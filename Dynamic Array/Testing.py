@@ -2,58 +2,62 @@ from dynamic_arry import DynamicArray
 from stupid_arry import SlowArray
 import time
 import matplotlib.pyplot as plt
-import ctypes
+import threading
 
 
-def measure_time_for_append(container: ctypes.Array, max_size: int) -> tuple[list[float], list[int], float, list[int]]:
+def measure_time_for_append(container, max_size: int) -> tuple[list[float], float]:
     times: list[float] = []
-    sizes: list[int] = []
-    capacity: list[int] = []
 
-    start_time: float = time.time()
-
-    for size in range(0, max_size + 1):
+    for size in range(max_size + 1):
+        start_time: float = time.perf_counter()
         container.append(1)  # Append an element
+        elapsed_time: float = time.perf_counter() - start_time
+        times.append(elapsed_time)
 
-        times.append(time.time() - start_time)  # Record time
-        sizes.append(size)  # Record size
-        cap: int = container.findCapacity()  # Get current capacity
-        capacity.append(cap)
+    final_time: float = sum(times)  # Total time taken
 
-    final_time: float = time.time() - start_time  # Total time taken
+    return times, final_time
 
-    return times, sizes, final_time, capacity
+
+def measure_dynamic_array(): # These are Threads
+    global time_dyn, fin_time_dyn
+    time_dyn, fin_time_dyn = measure_time_for_append(dynamic_array, max_size)
+
+
+def measure_slow_array(): # These are Threads
+    global time_slo, fin_time_slo
+    time_slo, fin_time_slo = measure_time_for_append(slow_array, max_size)
 
 
 # Initialize DynamicArray and SlowArray instances
 dynamic_array: DynamicArray = DynamicArray()
 slow_array: SlowArray = SlowArray()
-max_size: int = 1000  # Define the maximum size for the test
+max_size: int = 50000  # Define the maximum size for the test
 
-# Measure the time for appending elements to each array
-time_dyn, no_obj_dyn, fin_time_dyn, capacity_dyn = measure_time_for_append(dynamic_array, max_size)
-time_slo, no_obj_slo, fin_time_slo, capacity_slo = measure_time_for_append(slow_array, max_size)
+thread_dyn = threading.Thread(target=measure_dynamic_array)
+thread_slo = threading.Thread(target=measure_slow_array)
 
-# Not important
-# print("Dynamic Array size: ")
-# print(f'{time_dyn} \n'
-#       f'{no_obj_dyn} \n'
-#       f'{fin_time_dyn}\n'
-#       f'Capacity: {capacity_dyn} \n')
-# print("Slow Array size: ")
-# print(f'{time_slo} \n'
-#       f'{no_obj_slo} \n'
-#       f'{fin_time_slo}\n'
-#       f'Capacity: {capacity_slo} \n')
+thread_dyn.start()
+thread_slo.start()
 
-# print(fin_time_dyn, fin_time_slo)
+thread_dyn.join()
+thread_slo.join()
+
+
+print(f"Dynamic Array total time: {fin_time_dyn}")
+print(f"Slow Array total time: {fin_time_slo}")
+
+print("Dynamic Array times: ")
+print(f'{time_dyn}\n')
+print("Slow Array times: ")
+print(f'{time_slo}\n')
 
 fig, ax = plt.subplots()
 fig.patch.set_facecolor('black')
 ax.set_facecolor('black')
 
-ax.plot(no_obj_dyn, time_dyn, 'o', color='blue', label='DynamicArray', markersize=3)
-ax.plot(no_obj_slo, time_slo, 'o', color='red', label='Stupid List', markersize=3)
+ax.plot(range(max_size + 1), time_dyn, 'o', color='blue', label='DynamicArray', markersize=3)
+ax.plot(range(max_size + 1), time_slo, 'o', color='red', label='SlowArray', markersize=3)
 
 # Coloring
 ax.spines['bottom'].set_color('white')
@@ -65,11 +69,12 @@ ax.xaxis.label.set_color('white')
 ax.title.set_color('white')
 
 # Labels
-plt.title('Performance Comparison: Dynamic Array vs. Slow List')
-plt.xlabel('No. of elements')
+plt.title('Performance Comparison: Dynamic Array vs. Slow Array')
+plt.xlabel('Number of elements')
 plt.ylabel('Time (sec)')
 plt.legend()
 
-ax.set_ylim([max(max(time_dyn), max(time_slo)) * -0.25, max(max(time_dyn), max(time_slo)) * 1.1])
+# Adjust the y-axis limits to fit the data
+ax.set_ylim([0, max(max(time_dyn), max(time_slo)) * 1.1])
 
 plt.show()
