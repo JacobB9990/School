@@ -4,6 +4,12 @@ import time
 import matplotlib.pyplot as plt
 import threading
 
+# just initializing these variables
+time_dyn = None
+fin_time_dyn = None
+time_slo = None
+fin_time_slo = None
+
 
 def measure_time_for_append(container, max_size: int) -> tuple[list[float], float]:
     times: list[float] = []
@@ -19,12 +25,12 @@ def measure_time_for_append(container, max_size: int) -> tuple[list[float], floa
     return times, final_time
 
 
-def measure_dynamic_array(): # These are Threads
+def measure_dynamic_array():  # These are Threads
     global time_dyn, fin_time_dyn
     time_dyn, fin_time_dyn = measure_time_for_append(dynamic_array, max_size)
 
 
-def measure_slow_array(): # These are Threads
+def measure_slow_array():  # These are Threads
     global time_slo, fin_time_slo
     time_slo, fin_time_slo = measure_time_for_append(slow_array, max_size)
 
@@ -32,8 +38,9 @@ def measure_slow_array(): # These are Threads
 # Initialize DynamicArray and SlowArray instances
 dynamic_array: DynamicArray = DynamicArray()
 slow_array: SlowArray = SlowArray()
-max_size: int = 50000  # Define the maximum size for the test
+max_size: int = 10000  # Define the maximum size for the test
 
+# Threading runs both Dynamic and Slow at the same time to speed up the program
 thread_dyn = threading.Thread(target=measure_dynamic_array)
 thread_slo = threading.Thread(target=measure_slow_array)
 
@@ -43,14 +50,13 @@ thread_slo.start()
 thread_dyn.join()
 thread_slo.join()
 
-
-print(f"Dynamic Array total time: {fin_time_dyn}")
-print(f"Slow Array total time: {fin_time_slo}")
-
-print("Dynamic Array times: ")
-print(f'{time_dyn}\n')
-print("Slow Array times: ")
-print(f'{time_slo}\n')
+# print(f"Dynamic Array total time: {fin_time_dyn}")
+# print(f"Slow Array total time: {fin_time_slo}")
+#
+# print("Dynamic Array times: ")
+# print(f'{time_dyn}\n')
+# print("Slow Array times: ")
+# print(f'{time_slo}\n')
 
 fig, ax = plt.subplots()
 fig.patch.set_facecolor('black')
