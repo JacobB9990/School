@@ -6,9 +6,7 @@ import threading
 
 # just initializing these variables
 time_dyn = None
-fin_time_dyn = None
 time_slo = None
-fin_time_slo = None
 
 
 def measure_time_for_append(container, max_size: int) -> tuple[list[float], float]:
@@ -20,19 +18,18 @@ def measure_time_for_append(container, max_size: int) -> tuple[list[float], floa
         elapsed_time: float = time.perf_counter() - start_time
         times.append(elapsed_time)
 
-    final_time: float = sum(times)  # Total time taken
 
-    return times, final_time
+    return times
 
 
 def measure_dynamic_array():  # These are Threads
-    global time_dyn, fin_time_dyn
-    time_dyn, fin_time_dyn = measure_time_for_append(dynamic_array, max_size)
+    global time_dyn
+    time_dyn = measure_time_for_append(dynamic_array, max_size)
 
 
 def measure_slow_array():  # These are Threads
-    global time_slo, fin_time_slo
-    time_slo, fin_time_slo = measure_time_for_append(slow_array, max_size)
+    global time_slo
+    time_slo = measure_time_for_append(slow_array, max_size)
 
 
 # Initialize DynamicArray and SlowArray instances
