@@ -9,7 +9,7 @@ time_dyn = None
 time_slo = None
 
 
-def measure_time_for_append(container, max_size: int) -> tuple[list[float], float]:
+def measure_time_for_append(container, max_size: int) -> list[float]:
     times: list[float] = []
 
     for size in range(max_size + 1):
@@ -17,7 +17,6 @@ def measure_time_for_append(container, max_size: int) -> tuple[list[float], floa
         container.append(1)  # Append an element
         elapsed_time: float = time.perf_counter() - start_time
         times.append(elapsed_time)
-
 
     return times
 
@@ -35,7 +34,7 @@ def measure_slow_array():  # These are Threads
 # Initialize DynamicArray and SlowArray instances
 dynamic_array: DynamicArray = DynamicArray()
 slow_array: SlowArray = SlowArray()
-max_size: int = 10000  # Define the maximum size for the test
+max_size: int = 100  # Define the maximum size for the test
 
 # Threading runs both Dynamic and Slow at the same time to speed up the program
 thread_dyn = threading.Thread(target=measure_dynamic_array)
@@ -56,20 +55,20 @@ thread_slo.join()
 # print(f'{time_slo}\n')
 
 fig, ax = plt.subplots()
-fig.patch.set_facecolor('black')
-ax.set_facecolor('black')
+fig.patch.set_facecolor('white')
+ax.set_facecolor('white')
 
 ax.plot(range(max_size + 1), time_dyn, 'o', color='blue', label='DynamicArray', markersize=3)
 ax.plot(range(max_size + 1), time_slo, 'o', color='red', label='SlowArray', markersize=3)
 
 # Coloring
-ax.spines['bottom'].set_color('white')
-ax.spines['left'].set_color('white')
-ax.tick_params(axis='x', colors='white')
-ax.tick_params(axis='y', colors='white')
-ax.yaxis.label.set_color('white')
-ax.xaxis.label.set_color('white')
-ax.title.set_color('white')
+ax.spines['bottom'].set_color('black')
+ax.spines['left'].set_color('black')
+ax.tick_params(axis='x', colors='black')
+ax.tick_params(axis='y', colors='black')
+ax.yaxis.label.set_color('black')
+ax.xaxis.label.set_color('black')
+ax.title.set_color('black')
 
 # Labels
 plt.title('Performance Comparison: Dynamic Array vs. Slow Array')
@@ -77,7 +76,8 @@ plt.xlabel('Number of elements')
 plt.ylabel('Time (sec)')
 plt.legend()
 
+padding = max(max(time_dyn), max(time_slo))
 # Adjust the y-axis limits to fit the data
-ax.set_ylim([0, max(max(time_dyn), max(time_slo)) * 1.1])
+ax.set_ylim([padding * -0.1, padding * 1.1])
 
 plt.show()
