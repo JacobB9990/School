@@ -4,16 +4,29 @@ import time
 import matplotlib.pyplot as plt
 import threading
 
-# just initializing these variables
+# Just initializing these variables
 time_dyn = None
 time_slo = None
 
 
-def measure_time_for_append(container, max_size: int) -> list[float]:
+def measure_time_for_append(container, max_size: int) -> list[float]: # Time per append
     times: list[float] = []
 
     for size in range(max_size + 1):
         start_time: float = time.perf_counter()
+        container.append(1)  # Append an element
+        elapsed_time: float = time.perf_counter() - start_time
+        times.append(elapsed_time)
+
+    return times
+
+
+def measure_time_for_append_whole(container, max_size: int) -> list[float]: # Time each append since starting time
+    times: list[float] = []
+
+    start_time: float = time.perf_counter()
+
+    for size in range(max_size + 1):
         container.append(1)  # Append an element
         elapsed_time: float = time.perf_counter() - start_time
         times.append(elapsed_time)
@@ -34,7 +47,7 @@ def measure_slow_array():  # These are Threads
 # Initialize DynamicArray and SlowArray instances
 dynamic_array: DynamicArray = DynamicArray()
 slow_array: SlowArray = SlowArray()
-max_size: int = 100  # Define the maximum size for the test
+max_size: int = 10000  # Define the maximum size for the test
 
 # Threading runs both Dynamic and Slow at the same time to speed up the program
 thread_dyn = threading.Thread(target=measure_dynamic_array)
@@ -45,6 +58,9 @@ thread_slo.start()
 
 thread_dyn.join()
 thread_slo.join()
+
+print(sum(time_dyn))
+print(sum(time_slo))
 
 # print(f"Dynamic Array total time: {fin_time_dyn}")
 # print(f"Slow Array total time: {fin_time_slo}")
@@ -76,7 +92,7 @@ plt.xlabel('Number of elements')
 plt.ylabel('Time (sec)')
 plt.legend()
 
-padding = max(max(time_dyn), max(time_slo))
+padding = max(min(time_dyn), max(time_slo))
 # Adjust the y-axis limits to fit the data
 ax.set_ylim([padding * -0.1, padding * 1.1])
 
