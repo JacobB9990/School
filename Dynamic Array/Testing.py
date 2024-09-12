@@ -1,5 +1,5 @@
 from dynamic_arry import DynamicArray
-from stupid_arry import SlowArray
+from slow_arry import SlowArray
 import time
 import matplotlib.pyplot as plt
 import threading
@@ -36,18 +36,18 @@ def measure_time_for_append_whole(container, max_size: int) -> list[float]: # Ti
 
 def measure_dynamic_array():  # These are Threads
     global time_dyn
-    time_dyn = measure_time_for_append(dynamic_array, max_size)
+    time_dyn = measure_time_for_append_whole(dynamic_array, max_size)
 
 
 def measure_slow_array():  # These are Threads
     global time_slo
-    time_slo = measure_time_for_append(slow_array, max_size)
+    time_slo = measure_time_for_append_whole(slow_array, max_size)
 
 
 # Initialize DynamicArray and SlowArray instances
 dynamic_array: DynamicArray = DynamicArray()
 slow_array: SlowArray = SlowArray()
-max_size: int = 10000  # Define the maximum size for the test
+max_size: int = 500  # Define the maximum size for the test
 
 # Threading runs both Dynamic and Slow at the same time to speed up the program
 thread_dyn = threading.Thread(target=measure_dynamic_array)
@@ -89,7 +89,7 @@ ax.title.set_color('black')
 # Labels
 plt.title('Performance Comparison: Dynamic Array vs. Slow Array')
 plt.xlabel('Number of elements')
-plt.ylabel('Time (sec)')
+plt.ylabel('Time/each append (sec)')
 plt.legend()
 
 padding = max(min(time_dyn), max(time_slo))
