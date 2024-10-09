@@ -1,5 +1,5 @@
-from dynamic_arry import DynamicArray
-from slow_arry import SlowArray
+from .dynamic_arry import DynamicArray
+from .slow_arry import SlowArray
 import time
 import matplotlib.pyplot as plt
 import threading
@@ -9,7 +9,7 @@ time_dyn = None
 time_slo = None
 
 
-def measure_time_for_append(container, max_size: int) -> list[float]: # Time per append
+def measure_time_for_append(container, max_size: int) -> list[float]:  # Time per append
     times: list[float] = []
 
     for size in range(max_size + 1):
@@ -21,7 +21,9 @@ def measure_time_for_append(container, max_size: int) -> list[float]: # Time per
     return times
 
 
-def measure_time_for_append_whole(container, max_size: int) -> list[float]: # Time each append since starting time
+def measure_time_for_append_whole(
+    container, max_size: int
+) -> list[float]:  # Time each append since starting time
     times: list[float] = []
 
     start_time: float = time.perf_counter()
@@ -71,25 +73,29 @@ print(sum(time_slo))
 # print(f'{time_slo}\n')
 
 fig, ax = plt.subplots()
-fig.patch.set_facecolor('white')
-ax.set_facecolor('white')
+fig.patch.set_facecolor("white")
+ax.set_facecolor("white")
 
-ax.plot(range(max_size + 1), time_dyn, 'o', color='blue', label='DynamicArray', markersize=3)
-ax.plot(range(max_size + 1), time_slo, 'o', color='red', label='SlowArray', markersize=3)
+ax.plot(
+    range(max_size + 1), time_dyn, "o", color="blue", label="DynamicArray", markersize=3
+)
+ax.plot(
+    range(max_size + 1), time_slo, "o", color="red", label="SlowArray", markersize=3
+)
 
 # Coloring
-ax.spines['bottom'].set_color('black')
-ax.spines['left'].set_color('black')
-ax.tick_params(axis='x', colors='black')
-ax.tick_params(axis='y', colors='black')
-ax.yaxis.label.set_color('black')
-ax.xaxis.label.set_color('black')
-ax.title.set_color('black')
+ax.spines["bottom"].set_color("black")
+ax.spines["left"].set_color("black")
+ax.tick_params(axis="x", colors="black")
+ax.tick_params(axis="y", colors="black")
+ax.yaxis.label.set_color("black")
+ax.xaxis.label.set_color("black")
+ax.title.set_color("black")
 
 # Labels
-plt.title('Performance Comparison: Dynamic Array vs. Slow Array')
-plt.xlabel('Number of elements')
-plt.ylabel('Time/each append (sec)')
+plt.title("Performance Comparison: Dynamic Array vs. Slow Array")
+plt.xlabel("Number of elements")
+plt.ylabel("Time/each append (sec)")
 plt.legend()
 
 padding = max(min(time_dyn), max(time_slo))
