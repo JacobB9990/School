@@ -1,14 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node
-{
+struct Node {
     int data;
 
     Node *next;
 };
 // Test
-int main()
-{
+int main() {
     printf("Printing here.");
 }
