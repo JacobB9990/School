@@ -10,4 +10,5 @@ struct Node
 // Test
 int main()
 {
+    printf("Printing here.");
 }
