@@ -1,5 +1,5 @@
-from .dynamic_arry import DynamicArray
-from .slow_arry import SlowArray
+from dynamic_arry import DynamicArray
+from slow_arry import SlowArray
 import time
 import matplotlib.pyplot as plt
 import threading
