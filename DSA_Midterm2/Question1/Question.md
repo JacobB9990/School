@@ -1,0 +1,2 @@
+1. Given an arbitrary array A of integers, please design an algorithm, as efficient as possible, that constructs another array B of the same size (i.e., |B|=|A|), where B[i] is the number of elements in A on the right side of A[i] and smaller than A[i]. Time complexity analysis is required.
+- For example, A = [3,1,4,2], B = [2,0,1,0].
